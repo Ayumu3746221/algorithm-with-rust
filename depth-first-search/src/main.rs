@@ -25,7 +25,9 @@ fn main() {
 
     let target = 4;
     let found = depth_first_search(&root, target);
+    let found_recursion = depth_first_search_recursion(&root, target);
     println!("target {} found: {}", target, found);
+    println!("recursion target {} found: {}", target, found_recursion);
 }
 
 fn depth_first_search(root: &Node, target: i32) -> bool {
@@ -40,4 +42,13 @@ fn depth_first_search(root: &Node, target: i32) -> bool {
         }
     }
     false
+}
+
+fn depth_first_search_recursion(root: &Node, target: i32) -> bool {
+    if root.value == target {
+        return true;
+    }
+    root.children
+        .iter()
+        .any(|node| -> bool { depth_first_search_recursion(node, target) })
 }
