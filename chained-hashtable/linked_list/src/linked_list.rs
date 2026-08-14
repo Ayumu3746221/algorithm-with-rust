@@ -1,4 +1,4 @@
-struct List<T> {
+pub struct List<T> {
     head: Link<T>,
 }
 
@@ -8,7 +8,6 @@ struct Node<T> {
     element: T,
     next: Link<T>,
 }
-
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None }
@@ -41,6 +40,12 @@ impl<T> List<T> {
         IterMut {
             next: self.head.as_deref_mut(),
         }
+    }
+}
+
+impl<T> Default for List<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
