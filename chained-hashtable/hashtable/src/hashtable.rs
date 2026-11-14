@@ -1,4 +1,7 @@
-use std::hash::{DefaultHasher, Hash, Hasher};
+use std::{
+    hash::{DefaultHasher, Hash, Hasher},
+    ops::Index,
+};
 
 use linked_list::linked_list::List;
 
@@ -38,6 +41,20 @@ impl<K: Hash + Eq, V> HashTable<K, V> {
             }
         }
         None
+    }
+
+    pub fn re_search(&self, key: &K) -> Option<&V> {
+        let index = self.clac_index(key);
+        let list = &self.table[index as usize];
+        let mut iter = list.iter();
+
+        loop {
+            match iter.next() {
+                Some((k, v)) if k == key => return Some(v),
+                Some(&(_, _)) => continue,
+                None => return None,
+            }
+        }
     }
 
     fn clac_index(&self, key: &K) -> u64 {

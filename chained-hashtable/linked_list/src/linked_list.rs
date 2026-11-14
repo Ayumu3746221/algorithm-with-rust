@@ -1,3 +1,5 @@
+use std::mem;
+
 pub struct List<T> {
     head: Link<T>,
 }
@@ -13,6 +15,15 @@ impl<T> List<T> {
         List { head: None }
     }
 
+    pub fn re_push(&mut self, element: T) {
+        let new_node = Box::new(Node {
+            element,
+            next: mem::replace(&mut self.head, None),
+        });
+
+        self.head = Some(new_node);
+    }
+
     pub fn push(&mut self, element: T) {
         let new_node = Box::new(Node {
             element,
@@ -20,6 +31,16 @@ impl<T> List<T> {
         });
 
         self.head = Some(new_node);
+    }
+
+    pub fn re_pop(&mut self) -> Option<T> {
+        match self.head.take() {
+            None => None,
+            Some(node) => {
+                self.head = node.next;
+                Some(node.element)
+            }
+        }
     }
 
     /// Hash Tableで扱うことはないが、テストのために作成
